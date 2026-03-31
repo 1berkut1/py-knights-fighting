@@ -89,21 +89,22 @@ KNIGHTS = {
 }
 
 
+def duel(knight1: Knight, knight2: Knight) -> None:
+    """Вспомогательная функция для проведения одного боя."""
+    knight1.take_damage(knight2.power)
+    knight2.take_damage(knight1.power)
+
+
 def battle(knights_config: dict) -> dict:
-    lancelot = Knight(knights_config["lancelot"])
-    mordred = Knight(knights_config["mordred"])
-    arthur = Knight(knights_config["arthur"])
-    red_knight = Knight(knights_config["red_knight"])
+    knights = {
+        key: Knight(knight_data)
+        for key, knight_data in knights_config.items()
+    }
 
-    lancelot.take_damage(mordred.power)
-    mordred.take_damage(lancelot.power)
-
-    arthur.take_damage(red_knight.power)
-    red_knight.take_damage(arthur.power)
+    duel(knights["lancelot"], knights["mordred"])
+    duel(knights["arthur"], knights["red_knight"])
 
     return {
-        lancelot.name: lancelot.hp,
-        arthur.name: arthur.hp,
-        mordred.name: mordred.hp,
-        red_knight.name: red_knight.hp,
+        knight.name: knight.hp
+        for knight in knights.values()
     }
